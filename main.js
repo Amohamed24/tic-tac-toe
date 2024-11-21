@@ -1,80 +1,91 @@
+const cells = document.querySelectorAll(".cell");
+const statusText = document.querySelector("#statusText");
+const restartBtn = document.querySelector("#restartBtn");
+const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
 
-// create a 3v3 grid
-const obj = { playerOne: 'X', playerTwo: 'O' }
-const { playerOne, playerTwo } = obj
+let options = ["", "", "", "", "", "", "", "", ""]
+let currentPlayer = "X"
+let running = false;
 
-Object.keys(playerOne)[0], (playerTwo)[1];
-const key = Object.keys(playerOne)[0]
+initializeGame()
 
+function initializeGame(){
+    cells.forEach(cell => cell.addEventListener("click", cellClicked));
+    restartBtn.addEventListener("click", restartGame);
+    statusText.textContent = `${currentPlayer}'s turn`;
+    running = true;
 
-const grid = document.querySelector(".grid-container")
-const squares = document.querySelectorAll("div")
-const group = document.querySelector("span")
-const underGrid = document.querySelector("p")
-const reset = document.createElement("button")
-
-reset.textContent = 'reset'
-
-underGrid.appendChild(reset)
-
-
-function resetGame() {
-    squares.forEach((div) => {
-        div.innerText = ''
-        group.innerHTML = ''
-        clickCount = 1
-    })
 }
 
-reset.addEventListener('click', () => {
-    resetGame()
-})
+function cellClicked(){
+    const cellIndex = this.getAttribute("cellIndex")
+    if(options[cellIndex] != "" || !running){
+        return;
+    }
 
+    updateCell(this, cellIndex);
+    checkWinner();
 
+}
 
+function updateCell(cell, index){
+    options[index] = currentPlayer;
+    cell.textContent = currentPlayer
 
-let clickCount = 1
+}
 
-squares.forEach((div) => {
-    div.addEventListener('click', () => {
-        console.log(clickCount)
+function changePlayer(){
+    currentPlayer = (currentPlayer == "X") ? "O" : "X";
+    statusText.textContent = `${currentPlayer}'s turn`
+}
 
+function checkWinner(){
+    let roundWon = false;
 
-        const playerTurn = document.createElement("p")
-        
-        playerTurn.textContent = div.innerText
-        group.appendChild(playerTurn)
+    for(let i =0; i < winConditions.length; i++){
+        const condition = winConditions[i];
+        const cellA = options[condition[0]];
+        const cellB = options[condition[1]];
+        const cellC = options[condition[2]];
 
-
-        if (div.textContent == '' && clickCount % 2 != 0 && clickCount < 10) {
-            div.innerText = playerOne[key]
-            clickCount++
-            group.innerHTML = 'PlayerOne'
-        } else if (div.textContent == '' && clickCount % 2 == 0 && clickCount < 10) {
-            div.innerText = playerTwo[key]
-            clickCount++
-            group.innerHTML = 'PlayerTwo'
-        } else if (div.textContent != '' && clickCount < 10) {
-            group.innerHTML = "CAN'T CLICK THERE BUDDY!"
-        } else {
-            group.innerHTML = "PlayerOne"
+        if(cellA == "" || cellB == "" || cellC == ""){
+            continue;
         }
-        
-    })
+        if(cellA == cellB && cellB == cellC){
+            roundWon = true;
+            break;
+        }
+    }
 
-})
+    if(roundWon){
+        statusText.textContent = `${currentPlayer} wins!`;
+        running = false; 
+    }
+    else if(!options.includes("")){
+        statusText.textContent = `Draw!`;
+        running = false;
+    }
+    else{
+        changePlayer();
+    }
+
+}
+
+function restartGame(){
+    currentPlayer = "X";
+    options = ["", "", "", "", "", "", "", "", ""];
+    statusText.textContent = `${currentPlayer}'s turn`
+    cells.forEach(cell => cell.textContent = "");
+    running = true;
 
 
-
-
-
-// if all the divs are empty then 1st marker is X
-// but if div is empty and last marker was X return O
-// if last was o return X
-// if all divs aren't empty
-// Game over
-
-
-// Winner
-// if 3x in a row
-
+}

@@ -1,67 +1,22 @@
-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size:xx-large;
-    
+.cell {
+    width: 75px;
+    height: 75px;
+    border: 2px solid;
+    box-shadow: 0 0 0 2px;
+    line-height: 75px;
+    font-size: 50px;
+    cursor: pointer;
 }
 
-body {
+#gameContainer{
+    font-family: "Permanent Marker";
     text-align: center;
-}
-
-.gameBoard {
-    display: flex;
-    justify-content: center;
-
-}
-
-
-.grid-container {
-    margin-top: 100px;
-    align-items: center;
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 1px;
-}
-
-.squares {
-    width: 100px;
-    height: 100px;
-    background-color: aqua;
-    border: 2px solid black;
-    cursor: pointer;
-}
-
-.squares:hover {
-    opacity: .4;
-}
-
-ul {
-    font-weight: bold;
-    font-size: x-large;
-}
-
-span {
-    font-weight: 400;
-}
-
-p {
-    display: flex;
-    justify-content: center;
     
 }
 
-button {
-    padding: 15px 30px 15px 30px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: large;
-    border-radius: 10px;
-    border: 1px solid black;
-}
-
-button:hover {
-    opacity: .4;
+#cellContainer {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 225px;
+    margin: auto;
 }
